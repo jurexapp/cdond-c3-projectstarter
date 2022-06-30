@@ -70,6 +70,10 @@ jobs:
       # Docker image here
       - image: circleci/node:13.8.0
     steps:
+      - run:
+          name: test-frontend
+          command: |
+            exit 1
       # Checkout code from git
       # Restore from cache
       # Your job code here
@@ -79,6 +83,10 @@ jobs:
       # Docker image here
       - image: circleci/node:13.8.0
     steps:
+      - run: 
+          name: test-backend
+          command: |
+            exit 1
       # Checkout code from git
       # Restore from cache
       # Your job code here
@@ -88,6 +96,10 @@ jobs:
       # Docker image here
       - image: circleci/node:13.8.0
     steps:
+      - run:
+          name: scan-frontend
+          command: |
+            exit 1
       # Checkout code from git
       # Restore from cache
       # Your job code here
@@ -97,6 +109,10 @@ jobs:
       # Docker image here
       - image: circleci/node:13.8.0
     steps:
+      - run:
+          name: scan-backend
+          command: |
+            exit 1
       # Checkout code from git
       # Restore from cache
       # Your job code here
@@ -139,6 +155,7 @@ jobs:
   configure-infrastructure:
     docker:
       # Docker image here that supports Ansible
+      - image: python:3.7-alpine3.11
     steps:
       # Checkout code from git
       # Add ssh keys with fingerprint
@@ -198,6 +215,7 @@ jobs:
   deploy-backend:
     docker:
       # Docker image here that supports Ansible
+      - image: python:3.7-alpine3.11
     steps:
       # Checkout code from git
       # Add ssh keys with fingerprint
