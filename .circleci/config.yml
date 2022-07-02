@@ -68,8 +68,16 @@ jobs:
   test-frontend:
     docker:
       # Docker image here
+<<<<<<< HEAD
      - image: circleci/node:13.8.0
+=======
+      - image: circleci/node:13.8.0
+>>>>>>> 4ee1fdb1ab528898f4f0f3919951ece645557eed
     steps:
+      - run:
+          name: test-frontend
+          command: |
+            exit 1
       # Checkout code from git
       # Restore from cache
       # Your job code here
@@ -79,6 +87,10 @@ jobs:
       # Docker image here
       - image: circleci/node:13.8.0
     steps:
+      - run: 
+          name: test-backend
+          command: |
+            exit 1
       # Checkout code from git
       # Restore from cache
       # Your job code here
@@ -88,14 +100,27 @@ jobs:
       # Docker image here
       - image: circleci/node:13.8.0
     steps:
+      - run:
+          name: scan-frontend
+          command: |
+            exit 1
       # Checkout code from git
       # Restore from cache
       # Your job code here
 
   scan-backend:
     docker:
+<<<<<<< HEAD
       - image: circleci/node:13.8.0 # Docker image here
+=======
+      # Docker image here
+      - image: circleci/node:13.8.0
+>>>>>>> 4ee1fdb1ab528898f4f0f3919951ece645557eed
     steps:
+      - run:
+          name: scan-backend
+          command: |
+            exit 1
       # Checkout code from git
       # Restore from cache
       # Your job code here
@@ -175,7 +200,12 @@ jobs:
 
   deploy-frontend:
     docker:
+<<<<<<< HEAD
       - image: amazon/aws-cli # Docker image here that supports AWS CLI
+=======
+      # Docker image here that supports AWS CLI
+      - image: amazon/aws-cli
+>>>>>>> 4ee1fdb1ab528898f4f0f3919951ece645557eed
     steps:
       # Checkout code from git
       - run:
@@ -216,6 +246,7 @@ jobs:
     docker:
       - image: alpine
       # Lightweight Docker image 
+      - image: alpine
     steps:
       # Checkout code from git
       - run:
@@ -239,7 +270,11 @@ jobs:
   cloudfront-update:
     docker:
       # Docker image here that supports AWS CLI
+<<<<<<< HEAD
     - image: amazon/aws-cli
+=======
+      - image: amazon/aws-cli
+>>>>>>> 4ee1fdb1ab528898f4f0f3919951ece645557eed
     steps:
       # Checkout code from git
       - run:
@@ -252,9 +287,10 @@ jobs:
             # your code here
       # Here's where you will add some code to rollback on failure  
 
-cleanup:
+  cleanup:
     docker:
       # Docker image here
+      - image: amazon/aws-cli
     steps:
       # Checkout code from git
       - run:
