@@ -44,7 +44,7 @@ jobs:
           name: change directory to frontend
           command: |
             # Your code here
-            cd frontend 
+            cd frontend && pwd
       - run:
           name: install front-end dependencies
           command: |
@@ -65,7 +65,7 @@ jobs:
           name: Back-end build
           command: |
              # Your code here
-             exit 1
+             cd backend && npm install
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
