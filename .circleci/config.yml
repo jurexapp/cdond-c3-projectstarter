@@ -121,7 +121,8 @@ jobs:
           name: scan-frontend
           command: |
             cd frontend
-            npm audit
+            npm install 
+            npm audit fix --audit-level=critical --force
       # Checkout code from git
       # Restore from cache
       # Your job code here
@@ -139,7 +140,7 @@ jobs:
           name: scan-backend
           command: |
             cd backend
-            npm audit
+            npm audit fix --audit-level=critical --force
       # Checkout code from git
       # Restore from cache
       # Your job code here
