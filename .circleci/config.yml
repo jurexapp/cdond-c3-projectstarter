@@ -40,12 +40,12 @@ jobs:
       - checkout
       - restore_cache:
           keys: [frontend-build]
-      - run:
-          name: change directory to frontend
-          command: |
-            # Your code here
-            cd frontend && pwd
-      - run:
+      # - run:
+      #     name: change directory to frontend
+      #     command: |
+      #       # Your code here
+      #       cd frontend && pwd
+      # - run:
           name: install front-end dependencies
           command: |
             # Your code here
@@ -65,7 +65,8 @@ jobs:
           name: Back-end build
           command: |
              # Your code here
-             cd backend && npm install
+             cd backend 
+             npm install
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
@@ -82,7 +83,9 @@ jobs:
           name: test-frontend
           command: |
             npm --prefix ./frontend run test
-            
+      - save_cache:
+          paths: [frontend/node_modules]
+          key: frontend-build
       # Checkout code from git
       # Restore from cache
       # Your job code here
@@ -92,6 +95,9 @@ jobs:
       # Docker image here
       - image: circleci/node:13.8.0
     steps:
+      - checkout
+      - restore_cache:
+          keys: [backend-build]
       - run: 
           name: test-backend
           command: |
@@ -99,32 +105,47 @@ jobs:
       # Checkout code from git
       # Restore from cache
       # Your job code here
-            
+      - save_cache:
+          paths: [backend/node_modules]
+          key: backend-build
+
   scan-frontend:
     docker:
       # Docker image here
       - image: circleci/node:13.8.0
     steps:
+      - checkout
+      - restore_cache:
+          keys: [frontend-build]
       - run:
           name: scan-frontend
           command: |
-            exit 1
+            cd frontend
+            npm audit
       # Checkout code from git
       # Restore from cache
       # Your job code here
+      - save_cache:
+          paths: [frontend/node_modules]
+          key: frontend-build
 
   scan-backend:
     docker:
       # Docker image here
       - image: circleci/node:13.8.0
     steps:
+      - checkout
       - run:
           name: scan-backend
           command: |
-            exit 1
+            cd backend
+            npm audit
       # Checkout code from git
       # Restore from cache
       # Your job code here
+      - save_cache:
+          paths: [backend/node_modules]
+          key: backend-build
 
   deploy-infrastructure:
     docker:
@@ -132,6 +153,7 @@ jobs:
       - image: amazon/aws-cli
     steps:
       # Checkout code from git
+      - checkout
       - run:
           name: Ensure back-end infrastructure exists
           command: |
@@ -169,6 +191,7 @@ jobs:
       # Checkout code from git
       # Add ssh keys with fingerprint
       # attach workspace
+      - checkout
       - run:
           name: Install dependencies
           command: |
@@ -187,6 +210,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       # Checkout code from git
+      - checkout
       - run:
           name: Run migrations
           command: |
@@ -205,6 +229,7 @@ jobs:
       - image: amazon/aws-cli
     steps:
       # Checkout code from git
+      - checkout
       - run:
           name: Install dependencies
           command: |
@@ -229,6 +254,7 @@ jobs:
       # Checkout code from git
       # Add ssh keys with fingerprint
       # attach workspace
+      - checkout
       - run:
           name: Install dependencies
           command: |
@@ -246,6 +272,7 @@ jobs:
       - image: alpine
     steps:
       # Checkout code from git
+      - checkout
       - run:
           name: Install dependencies
           command: |
@@ -269,6 +296,7 @@ jobs:
       # Docker image here that supports AWS CLI
       - image: amazon/aws-cli
     steps:
+      - checkout
       # Checkout code from git
       - run:
           name: Install dependencies
@@ -286,6 +314,7 @@ jobs:
       - image: amazon/aws-cli
     steps:
       # Checkout code from git
+      - checkout
       - run:
           name: Get old stack workflow id
           command: |
