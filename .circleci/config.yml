@@ -82,7 +82,8 @@ jobs:
       - run:
           name: test-frontend
           command: |
-            npm --prefix ./frontend run test
+            cd frontend
+            npm run test
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
@@ -101,7 +102,8 @@ jobs:
       - run: 
           name: test-backend
           command: |
-            exit 1
+            cd backend
+            npm run test
       # Checkout code from git
       # Restore from cache
       # Your job code here
