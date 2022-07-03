@@ -40,17 +40,12 @@ jobs:
       - checkout
       - restore_cache:
           keys: [frontend-build]
-      # - run:
-      #     name: change directory to frontend
-      #     command: |
-      #       # Your code here
-      #       cd frontend && pwd
-      # - run:
           name: install front-end dependencies
           command: |
             # Your code here
             cd frontend
             npm  install
+            npm run build
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
@@ -68,6 +63,7 @@ jobs:
              # Your code here
              cd backend 
              npm install
+             npm run build
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
