@@ -49,7 +49,8 @@ jobs:
           name: install front-end dependencies
           command: |
             # Your code here
-            npm --prefix ./frontend install
+            cd frontend
+            npm  install
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
