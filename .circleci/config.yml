@@ -42,7 +42,7 @@ jobs:
       - checkout
       - restore_cache:
           keys: [frontend-build]
-      -run:
+      - run:
         name: install front-end dependencies
         command: |
           # Your code here
