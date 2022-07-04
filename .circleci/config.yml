@@ -45,9 +45,9 @@ jobs:
           name: install front-end dependencies
           command: |
             # Your code here
-            cd frontend
-            npm  install
-            npm run build
+            # cd frontend
+            # npm  install
+            # npm run build
             exit 1
       - save_cache:
           paths: [frontend/node_modules]
