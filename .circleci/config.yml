@@ -45,7 +45,7 @@ jobs:
       - run:
           name: install front-end dependencies
           command: |
-            Your code here
+            # Your code here
             cd frontend
             npm  install
             npm run build
