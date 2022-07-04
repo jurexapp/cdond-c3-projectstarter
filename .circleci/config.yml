@@ -45,11 +45,10 @@ jobs:
       - run:
           name: install front-end dependencies
           command: |
-            # Your code here
-            # cd frontend
-            # npm  install
-            # npm run build
-            exit 1
+            Your code here
+            cd frontend
+            npm  install
+            npm run build
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
@@ -87,7 +86,7 @@ jobs:
           name: test-frontend
           command: |
             cd frontend
-            npm install
+            # npm install
             npm run test
       - save_cache:
           paths: [frontend/node_modules]
@@ -356,7 +355,7 @@ workflows:
           requires: [test-frontend, test-backend, scan-frontend, scan-backend]
           filters:
             branches:
-              only: [test-feature-branch]
+              only: [master,test-feature-branch]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
       - run-migrations:
