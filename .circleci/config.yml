@@ -43,13 +43,13 @@ jobs:
       - restore_cache:
           keys: [frontend-build]
       - run:
-        name: install front-end dependencies
-        command: |
-          # Your code here
-          # cd frontend
-          # npm  install
-          # npm run build
-          exit 1
+          name: install front-end dependencies
+          command: |
+            # Your code here
+            # cd frontend
+            # npm  install
+            # npm run build
+            exit 1
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
