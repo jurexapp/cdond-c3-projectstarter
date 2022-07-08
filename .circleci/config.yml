@@ -188,7 +188,7 @@ jobs:
             cd .circleci/ansible
             aws ec2 describe-instances \
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
-            --output text >> inventory
+            --output text >> inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
@@ -207,6 +207,8 @@ jobs:
       - add_ssh_keys:
               # You can get this ID in the section where you registered the SSH Key
               fingerprints: ["cd:0c:6b:fc:30:0a:01:39:21:e0:5f:26:a3:00:32:50"] 
+      - attach_workspace:
+          at: ~/
       - run:
           name: Install Ansible
           command: |
@@ -214,8 +216,7 @@ jobs:
       - run:
           name: Run Playbook and Configure server
           command: |
-            cd .circleci/ansible
-            ansible-playbook -i inventory main.yml
+            ansible-playbook -i ~/project/.circleci/ansible/inventory.txt main.yml
       
       # Here's where you will add some code to rollback on failure      
 
