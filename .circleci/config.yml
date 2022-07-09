@@ -216,7 +216,7 @@ jobs:
           name: Install Ansible
           command: |
             apk add --update ansible
-            cat .cicleci/ansible/configure-server.yml
+            cat ~/project/.cicleci/ansible/configure-server.yml
       - run:
           name: Run Playbook and Configure server
           command: |
