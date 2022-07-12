@@ -30,7 +30,7 @@ commands:
           # Add when this will run
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-          success_migration=$(curl --insecure https://kvdb.io/HqfEAztpuJ4xoxeFY2khCR/migration_${CIRCLE_WORKFLOW_ID:0:7})
+            success_migration=$(curl --insecure https://kvdb.io/HqfEAztpuJ4xoxeFY2khCR/migration_${CIRCLE_WORKFLOW_ID:0:7})
             if ((success_migrations == 1));
             then
               cd  ~/project/backend
@@ -276,7 +276,7 @@ jobs:
           command: |
             curl -sL https://rpm.nodesource.com/setup_lts.x | bash -
             yum -y install nodejs
-            yum -y install tar gzip  
+            yum -y install tar gzip
       - run:
           name: Get backend url
           command: |
