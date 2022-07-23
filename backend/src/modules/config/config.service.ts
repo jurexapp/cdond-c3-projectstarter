@@ -5,6 +5,8 @@ import { Product } from '../../modules/domain/orders/entities/product.entity';
 import { Order } from '../../modules/domain/orders/entities/order.entity';
 import { Employee } from '../domain/employees/entities/employee.entity';
 
+import 'dotenv/config';
+
 export interface EnvConfig {
   VERSION: string;
   NODE_ENV: string;
