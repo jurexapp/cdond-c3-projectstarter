@@ -264,6 +264,7 @@ jobs:
             echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> ".env"
             sudo npm install -g npm
             npm run migrations > migrations_dump.txt
+            cat migrations_dump.txt
       - run:
           name: Send migration results to memstash
           command: |
@@ -401,7 +402,7 @@ jobs:
              then
                return 0
              else
-               return 0
+               return 1
              fi
       - run:
           name: Frontend smoke test.
