@@ -63,7 +63,7 @@ jobs:
 
   build-backend:
     docker:
-      - image: cimg/node:18.7.0
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - restore_cache:
@@ -73,7 +73,7 @@ jobs:
           command: |
             # Your code here
             cd backend 
-            sudo npm install -g npm
+            npm install
             npm run build
       - save_cache:
           paths: [backend/node_modules]
@@ -152,6 +152,7 @@ jobs:
           name: scan-backend
           command: |
             cd backend
+            npm install
             npm audit fix --audit-level=critical --force
       # Checkout code from git
       # Restore from cache
@@ -192,10 +193,11 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
-            # Your code here
+            # Your code here added filters for specificity
             cd .circleci/ansible
             aws ec2 describe-instances \
-            --query 'Reservations[*].Instances[*].PublicIpAddress' \
+            --filters Name=tag:Name,Values="backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+            --query  'Reservations[*].Instances[*].PublicIpAddress' \
             --output text >> inventory.txt
       - persist_to_workspace:
           root: ~/
@@ -240,7 +242,7 @@ jobs:
   run-migrations:
     docker:
       # Docker image here that supports NodeJS
-      - image: cimg/node:18.7.0
+      - image: circleci/node:13.8.0
     steps:
       # Checkout code from git
       - checkout
@@ -262,7 +264,7 @@ jobs:
             echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> ".env"
             echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> ".env"
             echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> ".env"
-            sudo npm install -g npm
+            sudo npm install 
             npm run migrations > migrations_dump.txt
             cat migrations_dump.txt
       - run:
@@ -296,8 +298,9 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            # your code here
+            # your code here also added filters
             export BACKEND_IP=$(aws ec2 describe-instances \
+            --filters Name=tag:Name,Values="backend-${CIRCLE_WORKFLOW_ID:0:7}" \
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
             --output text)
             export API_URL="http://${BACKEND_IP}:3030"
@@ -347,18 +350,18 @@ jobs:
           command: |
             # your code here
             cd backend
-            echo ENVIRONMENT=production >> ".env"
-            echo NODE_ENV=local >> ".env"        # production
-            echo TYPEORM_CONNECTION=$TYPEORM_CONNECTION >> ".env"
-            echo TYPEORM_MIGRATIONS_DIR=$TYPEORM_MIGRATIONS_DIR >> ".env"
-            echo TYPEORM_ENTITIES=$TYPEORM_ENTITIES >> ".env"
-            echo TYPEORM_MIGRATIONS=$TYPEORM_MIGRATIONS >> ".env"
-            echo TYPEORM_HOST=$TYPEORM_HOST >> ".env"
-            echo TYPEORM_PORT=$TYPEORM_PORT >> ".env"
-            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> ".env"
-            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> ".env"
-            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> ".env"
-            cat .env
+            # echo ENVIRONMENT=production >> ".env"
+            # echo NODE_ENV=local >> ".env"        # production
+            # echo TYPEORM_CONNECTION=$TYPEORM_CONNECTION >> ".env"
+            # echo TYPEORM_MIGRATIONS_DIR=$TYPEORM_MIGRATIONS_DIR >> ".env"
+            # echo TYPEORM_ENTITIES=$TYPEORM_ENTITIES >> ".env"
+            # echo TYPEORM_MIGRATIONS=$TYPEORM_MIGRATIONS >> ".env"
+            # echo TYPEORM_HOST=$TYPEORM_HOST >> ".env"
+            # echo TYPEORM_PORT=$TYPEORM_PORT >> ".env"
+            # echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> ".env"
+            # echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> ".env"
+            # echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> ".env"
+            # cat .env
             npm install
             npm run build
             cd ..
@@ -441,7 +444,7 @@ jobs:
             aws cloudformation deploy \
             --template-file .circleci/files/cloudfront.yml \
             --stack-name InitialStack \
-            --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
+            --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
             --tags project=udapeople
       # Here's where you will add some code to rollback on failure
 
@@ -473,9 +476,12 @@ jobs:
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
               # your code here
+              echo "cleaning up ............."
               aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
               aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
               aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
+            else
+              echo "nothing to clean up........."
             fi
 
 workflows:
@@ -496,7 +502,7 @@ workflows:
           requires: [test-frontend, test-backend, scan-frontend, scan-backend]
           filters:
             branches:
-              only: [master, test-feature-branch]
+              only: [main, test-feature-branch]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
       - run-migrations:
