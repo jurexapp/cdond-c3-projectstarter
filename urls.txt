@@ -1,7 +1,10 @@
 	Github
 		------
-URL01: 
+URL01: https://github.com/jurexapp/cdond-c3-projectstarter.git
 
 		S3 Bucket
 		---------
-URL02: 
+URL02: https://udapeople-3e5f2b0.s3.amazonaws.com/index.html
+
+
+ 
