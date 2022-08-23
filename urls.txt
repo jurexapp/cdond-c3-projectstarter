@@ -2,9 +2,9 @@
 		------
 URL01: https://github.com/jurexapp/cdond-c3-projectstarter.git
 
-		Cloud front
+		front End
 		---------
-URL02: http://d2hlkcv2hirqs4.cloudfront.net
+URL02: http://udapeople-4e65d9a.s3.amazonaws.com/index.html
 
 
  
